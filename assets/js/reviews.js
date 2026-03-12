@@ -134,8 +134,15 @@
     ]
   };
 
-  /* Render from cache immediately */
+  /* Render from cache immediately so content is visible before any network call */
   renderSummary(CACHED_DATA);
   renderGrid(CACHED_DATA.reviews);
   renderHomeSnapshot(CACHED_DATA);
+
+  /* Attempt a live update from the Google Places API.
+     If CORS is resolved via a serverless proxy, this will automatically
+     replace the cached count and reviews with the current live values —
+     keeping the displayed review count always accurate without any
+     manual edits to this file. */
+  fetchReviews();
 })();
