@@ -67,16 +67,9 @@
   }
 
   function fetchReviews() {
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=${FIELDS}&key=${API_KEY}`;
-
-    fetch(url)
+    fetch('/api/reviews')
       .then(r => r.json())
-      .then(json => {
-        if (json.status !== 'OK') {
-          console.warn('Places API error:', json.status);
-          return;
-        }
-        const d = json.result;
+      .then(d => {
         renderSummary(d);
         renderGrid(d.reviews || []);
         renderHomeSnapshot(d);
@@ -84,12 +77,6 @@
       .catch(err => console.warn('Review fetch failed:', err));
   }
 
-  /* The Places API Details endpoint does NOT support CORS for client-side
-     fetch from a different origin. For production, proxy through a small
-     serverless function (Netlify Function, Cloudflare Worker, etc.).
-     
-     For now we render the reviews that were cached at build time. */
-  
   const CACHED_DATA = {
     name: "Custom Car and Fleet Detailing",
     rating: 5,
