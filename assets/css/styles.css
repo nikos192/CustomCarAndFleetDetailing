@@ -43,8 +43,9 @@
   50%       { border-color: rgba(38,217,209,0.6); }
 }
 
-@keyframes spinSlow {
-  to { transform: rotate(360deg); }
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.85; transform: scale(1.015); }
 }
 
 /* ─────────────────────────────────────────────
@@ -651,20 +652,15 @@ figure {
   animation: borderPulse 4.5s ease-in-out infinite;
 }
 
-/* Spinning conic gradient ring */
+/* Soft glow bloom behind the strip */
 .info-strip::after {
   content: '';
   position: absolute;
-  inset: -3px;
-  border-radius: calc(var(--radius) + 3px);
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    rgba(38,217,209,0.25) 20%,
-    transparent 40%
-  );
+  inset: -1px;
+  border-radius: calc(var(--radius) + 1px);
+  background: radial-gradient(ellipse at 50% 0%, rgba(38,217,209,0.18) 0%, transparent 70%);
   z-index: -1;
-  animation: spinSlow 7s linear infinite;
+  animation: glowPulse 4s ease-in-out infinite;
   pointer-events: none;
 }
 
