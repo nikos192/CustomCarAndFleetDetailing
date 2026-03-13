@@ -1476,6 +1476,138 @@ a.service-card .btn {
 }
 
 /* ─────────────────────────────────────────────
+   Services Page
+───────────────────────────────────────────── */
+
+/* Alternating section backgrounds */
+.svc-section {
+  background: transparent;
+}
+
+.svc-section-alt {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+/* The panel that wraps each service */
+.svc-block {
+  background: linear-gradient(160deg, #111a22 0%, #0d1318 100%);
+  border: 1px solid rgba(38, 217, 209, 0.1);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left accent bar */
+.svc-block::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    to bottom,
+    var(--primary) 0%,
+    rgba(38, 217, 209, 0.3) 60%,
+    transparent 100%
+  );
+  border-radius: 3px 0 0 3px;
+}
+
+/* Faded large number watermark in the background */
+.svc-block::after {
+  content: attr(data-num);
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(5rem, 10vw, 9rem);
+  font-weight: 800;
+  color: rgba(38, 217, 209, 0.04);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.04em;
+}
+
+/* Header row: number badge + title */
+.svc-block-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.svc-block-header h2 {
+  margin: 0 0 0.25rem;
+}
+
+/* Number badge */
+.svc-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  background: rgba(38, 217, 209, 0.1);
+  border: 1px solid rgba(38, 217, 209, 0.3);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+/* Column wrappers inside the grid */
+.svc-col {
+  padding: 1.1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.svc-col-extras {
+  background: rgba(38, 217, 209, 0.03);
+  border-color: rgba(38, 217, 209, 0.08);
+}
+
+/* Inclusion list with teal tick marks */
+.svc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.svc-list li {
+  padding-left: 1.4rem;
+  position: relative;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.svc-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* Extras list uses a dimmer colour and dash marker */
+.svc-list-extras li {
+  color: rgba(190, 199, 203, 0.7);
+}
+
+.svc-list-extras li::before {
+  content: '+';
+  color: rgba(38, 217, 209, 0.5);
+}
+
+/* ─────────────────────────────────────────────
    Scroll Reveal
 ───────────────────────────────────────────── */
 .reveal {
