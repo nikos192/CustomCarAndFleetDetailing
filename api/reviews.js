@@ -1,12 +1,25 @@
 const PLACE_ID = 'ChIJ_w7XibnQCAYRV5SDkN9nK4o';
-const API_KEY  = 'AIzaSyBfkFdzUkiSNVHnBTf3K2jcgDNb3OT3gUI';
 const FIELDS   = 'name,rating,user_ratings_total,reviews,url';
 
+const ALLOWED_ORIGINS = [
+  'https://customcarandfleetdetailing.com.au',
+  'https://www.customcarandfleetdetailing.com.au',
+];
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin || '';
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Vary', 'Origin');
+
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'api_key_not_configured' });
+  }
 
   try {
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=${FIELDS}&key=${API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=${FIELDS}&key=${apiKey}`;
     const response = await fetch(url);
     const data = await response.json();
 

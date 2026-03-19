@@ -1,11 +1,16 @@
 /**
- * Google Reviews – fetches live reviews via Places API and renders them.
- * Place ID: ChIJ_w7XibnQCAYRV5SDkN9nK4o
+ * Google Reviews – fetches live reviews via the /api/reviews proxy and renders them.
  */
 (function () {
-  const PLACE_ID = 'ChIJ_w7XibnQCAYRV5SDkN9nK4o';
-  const API_KEY  = 'AIzaSyBfkFdzUkiSNVHnBTf3K2jcgDNb3OT3gUI';
-  const FIELDS   = 'name,rating,user_ratings_total,reviews,url';
+  /* Escape untrusted strings before inserting into innerHTML */
+  function esc(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 
   function stars(n) {
     return '★'.repeat(n) + '☆'.repeat(5 - n);
@@ -22,17 +27,17 @@
   }
 
   function renderReviewCard(r) {
-    const text = r.text.length > 220 ? r.text.slice(0, 220) + '…' : r.text;
+    const text = r.text.length > 220 ? r.text.slice(0, 220) + '\u2026' : r.text;
     return `
       <article class="review-card card">
         <div class="review-header">
-          <img class="review-avatar" src="${r.profile_photo_url}" alt="${r.author_name}" width="44" height="44" loading="lazy" referrerpolicy="no-referrer">
+          <img class="review-avatar" src="${esc(r.profile_photo_url)}" alt="${esc(r.author_name)}" width="44" height="44" loading="lazy" referrerpolicy="no-referrer">
           <div>
-            <p class="review-author">${r.author_name}</p>
-            <p class="review-meta">${stars(r.rating)} · ${timeAgo(r.time)}</p>
+            <p class="review-author">${esc(r.author_name)}</p>
+            <p class="review-meta">${stars(r.rating)} &middot; ${timeAgo(r.time)}</p>
           </div>
         </div>
-        <p class="review-text">${text}</p>
+        <p class="review-text">${esc(text)}</p>
       </article>`;
   }
 
@@ -41,9 +46,9 @@
     if (!el) return;
     el.innerHTML = `
       <div class="review-summary-inner">
-        <p class="kpi">${data.rating.toFixed(1)}<span class="review-star">★</span></p>
-        <p class="review-count">${data.user_ratings_total} Google reviews</p>
-        <a class="btn btn-primary" href="${data.url}" target="_blank" rel="noopener">Leave a Review</a>
+        <p class="kpi">${esc(data.rating.toFixed(1))}<span class="review-star">&#9733;</span></p>
+        <p class="review-count">${esc(String(data.user_ratings_total))} Google reviews</p>
+        <a class="btn btn-primary" href="${esc(data.url)}" target="_blank" rel="noopener noreferrer">Leave a Review</a>
       </div>`;
   }
 
@@ -60,8 +65,8 @@
     const topReviews = (data.reviews || []).slice(0, 3);
     el.innerHTML = `
       <article class="card review-summary-card">
-        <p class="kpi">${data.rating.toFixed(1)}<span class="review-star">★</span></p>
-        <p>${data.user_ratings_total} verified Google reviews</p>
+        <p class="kpi">${esc(data.rating.toFixed(1))}<span class="review-star">&#9733;</span></p>
+        <p>${esc(String(data.user_ratings_total))} verified Google reviews</p>
       </article>
       ${topReviews.map(renderReviewCard).join('')}`;
   }
@@ -116,7 +121,7 @@
         profile_photo_url: "https://lh3.googleusercontent.com/a/ACg8ocIvGw5fxCSgm3SVfr1jf04PcjEqaNZFzXDh76hZbsSLo03CJA=s128-c0x00000000-cc-rp-mo",
         rating: 5,
         time: 1763778030,
-        text: "Jye does an amazing job with our company fleet. He's easy to work with, always punctual, and our vehicles are spotless every time. Best part is he is mobile so we don't have any down time organising to get vehicles dropped off and picked up.\nGreat service from a great guy—highly recommended!"
+        text: "Jye does an amazing job with our company fleet. He's easy to work with, always punctual, and our vehicles are spotless every time. Best part is he is mobile so we don't have any down time organising to get vehicles dropped off and picked up.\nGreat service from a great guy\u2014highly recommended!"
       }
     ]
   };
@@ -126,10 +131,6 @@
   renderGrid(CACHED_DATA.reviews);
   renderHomeSnapshot(CACHED_DATA);
 
-  /* Attempt a live update from the Google Places API.
-     If CORS is resolved via a serverless proxy, this will automatically
-     replace the cached count and reviews with the current live values —
-     keeping the displayed review count always accurate without any
-     manual edits to this file. */
+  /* Attempt a live update via the serverless proxy */
   fetchReviews();
 })();
