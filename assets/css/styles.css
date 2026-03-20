@@ -1015,8 +1015,7 @@ textarea {
 
 .gallery-item img {
   width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
+  height: auto;
   border-radius: 0;
   transition: transform 0.3s ease;
 }
