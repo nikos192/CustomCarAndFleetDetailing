@@ -75,6 +75,7 @@
     fetch('/api/reviews')
       .then(r => r.json())
       .then(d => {
+        if (!d || d.error || typeof d.rating !== 'number') return;
         renderSummary(d);
         renderGrid(d.reviews || []);
         renderHomeSnapshot(d);
