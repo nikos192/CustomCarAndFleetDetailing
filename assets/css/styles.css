@@ -1,7 +1,4 @@
-/* ─────────────────────────────────────────────
-   Google Fonts
-───────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+/* Google Fonts loaded via <link> in HTML for non-blocking render */
 
 /* ─────────────────────────────────────────────
    Keyframes
@@ -937,6 +934,14 @@ textarea {
 /* ─────────────────────────────────────────────
    Gallery
 ───────────────────────────────────────────── */
+.gallery-page .grid-3 {
+  gap: 0.25rem;
+}
+
+.gallery-page .gallery-item.reveal-stagger.visible {
+  transition-delay: 0s;
+}
+
 .gallery-controls {
   display: flex;
   flex-wrap: wrap;
@@ -991,7 +996,7 @@ textarea {
 }
 
 .gallery-item:hover {
-  transform: translateY(-4px);
+  transform: none;
   box-shadow: 0 18px 44px rgba(0,0,0,0.38), 0 0 0 1px rgba(38,217,209,0.12);
 }
 
@@ -1001,13 +1006,14 @@ textarea {
 
 .gallery-item img {
   width: 100%;
-  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
   border-radius: 0;
-  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+  transition: transform 0.3s ease;
 }
 
 .gallery-item:hover img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .gallery-item figcaption {
