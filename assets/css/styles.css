@@ -938,6 +938,14 @@ textarea {
   gap: 0.25rem;
 }
 
+/* Gallery items must appear instantly — skip fade-in animation */
+.gallery-page .gallery-item.reveal,
+.gallery-page .gallery-item.reveal-stagger {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
 .gallery-page .gallery-item.reveal-stagger.visible {
   transition-delay: 0s;
 }
